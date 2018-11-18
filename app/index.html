@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<title>ItemDeed</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="modal.css">
+<style>
+body { padding: 10px; }
+h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+app {
+    position: relative;
+}
+img {
+    border: 1px solid #ddd; /* Gray border */
+    border-radius: 8px;  /* Rounded border */
+    padding: 5px; /* Some padding */
+    width: 150px; /* Set a small width */
+}
+.w3-row-padding img {margin-bottom: 12px}
+/* Set the width of the sidebar to 120px */
+.w3-sidebar {width: 120px;background: #222;}
+/* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+#main {margin-left: 120px}
+/* Remove margins from "page content" on small screens */
+@media only screen and (max-width: 600px) {#main {margin-left: 0}}
+[v-cloak] > * { display:none; }
+[v-cloak]::before { content: "loading..."; }
+</style>
+<body class="w3-black">
+
+<script type="text/x-template" id="modal-details-template">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+
+          <div class="modal-header">
+            <slot name="header">
+              Item Details
+            </slot>
+          </div>
+
+          <div class="modal-body">
+            <slot name="body">
+              default body
+            </slot>
+          </div>
+
+          <div class="modal-footer">
+            <slot name="footer">
+              <button class="modal-button-default" @click="$emit('close')">
+                Close Window
+              </button>
+            </slot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</script>
+
+<script type="text/x-template" id="modal-my-details-template">
+  <transition name="modal2">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+
+          <div class="modal-header">
+            <slot name="header">
+              Item Details
+            </slot>
+          </div>
+
+          <div class="modal-body">
+            <slot name="body">
+              default body
+            </slot>
+          </div>
+
+          <div class="modal-footer">
+            <slot name="footer">
+              <button class="modal-button-default" @click="$emit('close')">
+                Close Window
+              </button>
+            </slot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</script>
+
+<!-- App div -->
+
+<div id="app" v-cloak>
+<nav class="w3-topnav w3-small w3-center">
+  <a href="register.html" class="w3-bar-item w3-button w3-padding-small w3-hover-black">
+    ADD AN ITEM
+  </a>
+  <a href="proveit.html" class="w3-bar-item w3-button w3-padding-small w3-hover-black">
+    AUTHENTICATE AN ITEM
+  </a>
+</nav>
+
+<!-- Page Content -->
+<div class="w3-padding-small">
+  <!-- Header/Home -->
+  <header class="w3-container w3-padding-small w3-center w3-black">
+    <a href="https://permanonce.io"><img src="itemdeedlogo.png"></a>
+    <div v-if="web3Enabled">
+      <p>{{ networkLabel }} </p>
+    </div>
+    <link rel="shortcut icon" href="favicon.png" >
+  </header>
+
+  <div v-if="web3Enabled" class="w3-center w3-padding-small w3-black"><input type="text" v-model="search" placeholder="Search Items"></div>
+
+  <!-- Item List Section -->
+  <div v-for="item in filteredItems" class="w3-content w3-center w3-text-grey w3-padding-small">
+     <div v-if="item.owner==userAccount">
+      <button class="w3-padding-small w3-button w3-hover-black" v-on:click="showItemDetails(item)">* {{ itemLabel(item) }} {{ item.serialNumber }}</button>
+    </div>
+     <div v-else>
+      <button class="w3-padding-small w3-button w3-hover-black" v-on:click="showItemDetails(item)">{{ itemLabel(item) }} {{ item.serialNumber }}</button>
+    </div>
+  </div>
+
+  <modal v-if="showDetailsModal" @close="showDetailsModal=false">
+    <h3 slot="header">Item Details</h3>
+    <span slot="body">
+      <!--
+      <p>ItemId: {{ itemId }}</p>
+    -->
+      <p>Manufacturer: {{ lookupManufacturerLabel(itemManufacturer) }}</p>
+      <p>Serial Number: {{ itemSerialNumber }}</p>
+      <p>Owner Address: <a v-bind:href="'https://etherscan.io/address/' +  itemOwner">{{itemOwner}}</a></p>
+      <div class="row">
+        <div class="column">
+          <img v-bind:src="itemUrl" v-on:click="displayMetaData()">
+        </div>
+        <div class="column">
+          <canvas id="canvas"></canvas>
+          <br/>
+          Scan with Mobile dApp
+        </div>
+      </div>
+      <p>Date Created: {{ itemDateCreated }}</p>
+    </span>
+  </modal>
+
+  <modal2 v-if="showMyDetailsModal" @close="showMyDetailsModal=false">
+    <h3 slot="header">My Item Details</h3>
+    <span slot="body">
+      <p>Manufacturer: {{ lookupManufacturerLabel(itemManufacturer) }}</p>
+      <p>Serial Number: {{ itemSerialNumber }}</p>
+      <p>Owner Address: <a v-bind:href="'https://etherscan.io/address/' +  itemOwner">{{itemOwner}}</a></p>
+      <div class="row">
+        <div class="column">
+          <img v-bind:src="itemUrl" v-on:click="displayMetaData()">
+        </div>
+        <div class="column">
+          <canvas id="canvas"></canvas>
+          <br/>
+          Scan with Mobile dApp
+        </div>
+      </div>
+      <p>Date Created: {{ itemDateCreated }}</p>
+      <p>{{ processingMessage }} <i v-show="showSpinner" class="fa fa-spinner fa-spin" style="font-size:24px;color:white"></i></p>
+      <p><button v-show="displayRegistrationComponents" type="button" class="modal-button-default" v-on:click="transferOwnership()">Transfer to Address:</button></p>
+      <p><input v-show="displayRegistrationComponents" type="text" id="newOwnerAddress" v-model="newOwnerAddress" :placeholder="itemOwner"></p>
+      <p><button v-show="displayRegistrationComponents" type="button" class="modal-button-default" v-on:click="deleteItemDeed()">Delete Item Deed</button></p>
+    </span>
+
+    <!-- Footer -->
+  <footer class="w3-content w3-padding-small w3-text-grey w3-xlarge">
+
+  </footer>
+
+<!-- END PAGE CONTENT -->
+</div>
+
+<!-- END App div -->
+</div>
+<script type="text/javascript" src="itemappvue.js">itemppvue here</script>
+</body>
+</html>
