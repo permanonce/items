@@ -1,7 +1,7 @@
 {
-  "name": "erc721-bike-deed",
+  "name": "erc721-item-deed",
   "version": "1.0.0",
-  "description": "An Bike registration implementation of the ERC721 Deed Standard",
+  "description": "An item registration implementation of the ERC721 Deed Standard",
   "main": "truffle.js",
   "directories": {
     "test": "test"
@@ -15,11 +15,11 @@
   "author": "<kennethhoytwoodruff@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kennethhoytwoodruff/BikeDeed.git"
+    "url": "https://github.com/permanonce/items.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kennethhoytwoodruff/BikeDeed/issues"
+    "url": "https://github.com/permanonce/items/issues"
   },
   "devDependencies": {
     "babel-polyfill": "^6.23.0",

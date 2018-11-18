@@ -1,8 +1,8 @@
-#BikeDeed
+#ItemDeed
 
-`BikeDeed.sol` is an implementation of the latest draft of the ERC721 standard.
+`ItemDeed.sol` is an implementation of the latest draft of the ERC721 standard.
 
-A mostly functional MVP can be found here: http://bikedeed.io (requires Chrome browser with Metamask plugin and a Mainnet Ethereum account with Ether).
+A mostly functional MVP can be found here: http://itemdeed.io (requires Chrome browser with Metamask plugin and a Mainnet Ethereum account with Ether).
 
 Its inheriting contract `ERC721Deed.sol` is based on the `ERC721Token` from OpenZeppelin (https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/token/ERC721/ERC721Token.sol).
 
@@ -10,9 +10,9 @@ Its inheriting contract `ERC721Deed.sol` is based on the `ERC721Token` from Open
 
 ## About this example
 
-BikeDeed is a first attempt at building an Ethereum Dapp.  BikeDeed leans heavily on the incredible efforts of:
+ItemDeed is a first attempt at building an Ethereum Dapp.  ItemDeed leans heavily on the incredible efforts of:
 1. https://github.com/nastassiasachs/ERC721ExampleDeed
-2. https://github.com/Michael-Free/bikechain-ethwaterloo.
+2. https://github.com/Michael-Free/itemchain-ethwaterloo.
 3. OpenZeppelin.  
 
 Thank you!  
@@ -25,14 +25,14 @@ Thank you!
 5. Chrome browser with Metamask plugin
 
 ## Dev Installation
-1. git clone https://github.com/kennethhoytwoodruff/BikeDeed.git
+1. git clone https://github.com/kennethhoytwoodruff/ItemDeed.git
 2. npm install
 3. truffle compile
 4. npm run test (optional)
 5. start ganache on http://localhost:8545
 6. truffle migrate
-7. truffle exec scripts/populatebikedeed.js
-8. truffle exec scripts/displaybikes.js (optional)
+7. truffle exec scripts/populateitemdeed.js
+8. truffle exec scripts/displayitems.js (optional)
 9. npm run build
 10. npm run server
 11. Make sure you have an Internet connection and go to http://localhost:8080 with your browser.
@@ -50,9 +50,9 @@ The tests and mocks of this repository are based on OpenZeppelin work. The direc
 
 ## TODO
 1. Add Approval functionality.
-2. Update Proof of Ownership of existing Bike deeds - experiment with complex IPFS objects.
+2. Update Proof of Ownership of existing Item deeds - experiment with complex IPFS objects.
 3. Refactor Javascript and Vue js.
 4. Redesign UI for Android/IPhone compatibility.
 5. Remove unused Node modules.
 6. Improve Registration workflow.
-7. Make BikeDeed use 'Composables' (ERC-998).
+7. Make ItemDeed use 'Composables' (ERC-998).
