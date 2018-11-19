@@ -42,6 +42,7 @@ module.exports = {
       { from: './app/chainlink.png', to: "chainlink.png" },
       { from: './app/poofileexample.jpg', to: "poofileexample.jpg" },
       { from: './app/bikedeedlogo.png', to: "bikedeedlogo.png" },
+      { from: './app/itemlogo.jpg', to: "itemlogo.jpg" },
       { from: './app/QR_icon.svg', to: "QR_icon.svg" },
       { from: './app/modal.css', to: "modal.css" },
       { from: './app/qrcode.css', to: "qrcode.css" }

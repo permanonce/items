@@ -46,13 +46,14 @@ var app = new Vue({
       el: '#app',
       data: {
         // Ropsten address???
+	contractAddress: '0x90e3f2e4adef3350bf6e38e3d452bea71f371650',
         //contractAddress: '0x83f306d638daeedc8895ba5ae6dc6e173195e056',
         // Old Ropsten Address
         //contractAddress: '0xdeEe03988C64C3aa4fcFe36896c4272ACF490a33',
         // Mainnet
         //contractAddress: '0xa7aB6FcA68f407BB5258556af221dE9d8D1A94B5',
         // Ganache Address???
-        contractAddress: "0x0326f2995b5defb4c06cff408cad8328423c6947",
+        //contractAddress: "0x0326f2995b5defb4c06cff408cad8328423c6947",
         userAccount: '',
         nametag: '',
         status: '',
@@ -152,19 +153,19 @@ var app = new Vue({
 
           switch (networkId) {
           case "1":
-            this.networkLabel = "";
+            this.networkLabel = "You are on the Mainnet - Please switch to Ropsten Network";
             break;
           case "2":
-            this.networkLabel = "You are on the Morden Network - Please switch to Mainnet";
+            this.networkLabel = "You are on the Morden Network - Please switch to Ropsten Network";
             break;
           case "3":
-            this.networkLabel = "You are on the Ropsten Network - Please switch to Mainnet";
+            this.networkLabel = "";
             break;
           case "4":
-            this.networkLabel = "You are on the Rinkeby Network - Please switch to Mainnet";
+            this.networkLabel = "You are on the Rinkeby Network - Please switch to Ropsten Network";
             break;
           case "42":
-            this.networkLabel = "You are on the Kovan Network - Please switch to Mainnet";
+            this.networkLabel = "You are on the Kovan Network - Please switch to Ropsten Network";
             break;
           default:
             this.networkLabel = "";
@@ -574,7 +575,7 @@ var app = new Vue({
          const pooFile = document.getElementById("pooFile");
          const reader = new FileReader();
          const fileContents = await readUploadedFileAsBuffer(pooFile.files[0]);
-         const ipfs = window.IpfsApi('itemdeed.io', 443, {protocol:'https'} ); // Connect to IPFS
+         const ipfs = window.IpfsApi('permanonce.io', 443, {protocol:'https'} ); // Connect to IPFS
          const buf = Buffer.from(fileContents); // Convert data into buffer
          this.showUploadSpinner = true;
          ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
