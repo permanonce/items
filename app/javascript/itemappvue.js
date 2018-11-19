@@ -45,14 +45,13 @@ Vue.component('modal2', {
 var app = new Vue({
       el: '#app',
       data: {
-        // Ropsten address???
-	contractAddress: '0x90e3f2e4adef3350bf6e38e3d452bea71f371650',
-        //contractAddress: '0x83f306d638daeedc8895ba5ae6dc6e173195e056',
-        // Old Ropsten Address
-        //contractAddress: '0xdeEe03988C64C3aa4fcFe36896c4272ACF490a33',
+        // Ropsten address
+        //contractAddress: '0x90e3f2e4adef3350bf6e38e3d452bea71f371650',
+
         // Mainnet
         //contractAddress: '0xa7aB6FcA68f407BB5258556af221dE9d8D1A94B5',
-        // Ganache Address???
+
+        // Ganache Address
         //contractAddress: "0x0326f2995b5defb4c06cff408cad8328423c6947",
         userAccount: '',
         nametag: '',

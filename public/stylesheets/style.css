@@ -1,0 +1,67 @@
+body {
+  padding: 10px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+a img {
+    border: 1px solid #ddd; /* Gray border */
+    border-radius: 8px;  /* Rounded border */
+    padding: 5px; /* Some padding */
+    width: 150px; /* Set a small width */
+}
+
+.itemImage {
+    border: 1px solid #ddd; /* Gray border */
+    border-radius: 8px;  /* Rounded border */
+    padding: 5px; /* Some padding */
+    width: 100px; /* Set a small width */
+}
+
+.qrcode {
+    border: 1px solid #ddd; /* Gray border */
+    border-radius: 8px;  /* Rounded border */
+    padding: 5px; /* Some padding */
+    width: 100px; /* Set a small width */
+}
+
+  * {
+   margin: 0;
+   padding: 0;
+  }
+  .imgbox {
+   display: grid;
+   height: 100%;
+  }
+
+  .imgbox-small {
+   display: grid;
+   height: 100%;
+  }
+
+  .center-fit {
+   max-width: 70%;
+   max-height: 70vh;
+   margin: auto;
+  }
+
+  .center-fit-small {
+   max-width: 20%;
+   max-height: 20vh;
+   margin: auto;
+  }
+
+  .left-fit {
+   max-width: 60%;
+   max-height: 60vh;
+   margin-left: 0px;
+  }
+
+  .left-fit-small {
+   max-width: 20%;
+   max-height: 20vh;
+   margin-left: 0px;
+  }

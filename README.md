@@ -25,7 +25,7 @@ Thank you!
 5. Chrome browser with Metamask plugin
 
 ## Dev Installation
-1. git clone https://github.com/kennethhoytwoodruff/ItemDeed.git
+1. git clone https://github.com/permanonce/items.git
 2. npm install
 3. truffle compile
 4. npm run test (optional)
@@ -34,7 +34,7 @@ Thank you!
 7. truffle exec scripts/populateitemdeed.js
 8. truffle exec scripts/displayitems.js (optional)
 9. npm run build
-10. npm run server
+10. npm start
 11. Make sure you have an Internet connection and go to http://localhost:8080 with your browser.
 
 # Configure and start IPFS

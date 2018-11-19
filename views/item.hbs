@@ -1,0 +1,24 @@
+<div class="modal-wrapper">
+  <div class="modal-container">
+    <h3 slot="modal-header">Item Details</h3>
+    <span slot="modal-body">
+      <p>Manufacturer: {{ item.manufacturer }}</p>
+      <p>Serial Number: {{ item.serialNumber }}</p>
+      <p>Owner Address: <br>
+        <a href="https://etherscan.io/address/{{item.owner}}">{{item.owner}}</a></p>
+      <div class="row">
+        <div class="column">
+          <a href="{{item.itemUrl}}"><img class="itemImage" src="{{item.itemUrl}}" alt="{{item.name}}"></a>
+        </div>
+        <div class="column">
+          <img src="{{item.qrCode}}"/>
+          <br/>
+           Scan with Mobile dApp
+        </div>
+      </div>
+      <p>Date Created: {{ item.dateCreated }}</p>
+    </span>
+  <!-- end modal-container -->
+  </div>
+<!-- end modal-wrapper -->
+</div>

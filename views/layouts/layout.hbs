@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://bikedeed.io/app/modal.css">
+  <link rel='stylesheet' href='https://bikedeed.io/stylesheets/style.css' />
+</head>
+<style>
+body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+@media only screen and (max-width: 600px) {#main {margin-left: 0}}
+</style>
+<div id="app">
+<body class="w3-black">
+    {{> header }}
+    <div class="w3-content w3-text-grey w3-padding-small">
+    {{{body}}}
+    </div>
+  </body>
+</div>
+</html>
