@@ -2,8 +2,21 @@
 import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract'
 import Vue from './vue'
+import VueRouter from 'vue-router'
+import Users from '../Users.vue'
+import ItemDetails from '../ItemDetails.vue'
 import itemmanufacturersfromfile from './itemmanufacturers.json'
 import VModal from 'vue-js-modal'
+
+Vue.use(VueRouter);
+const routes = [
+  { path: '/users', component: Users },
+  { path: '/itemdetails', component: ItemDetails }
+];
+
+const router = new VueRouter({
+  routes: routes
+});
 
 Vue.use(VModal, { dynamic: true })
 //import Modal from '../Modal.vue'
@@ -44,6 +57,7 @@ Vue.component('modal2', {
 
 var app = new Vue({
       el: '#app',
+      router,
       data: {
         // Ropsten address
         //contractAddress: '0x90e3f2e4adef3350bf6e38e3d452bea71f371650',
@@ -52,7 +66,7 @@ var app = new Vue({
         //contractAddress: '0xa7aB6FcA68f407BB5258556af221dE9d8D1A94B5',
 
         // Ganache Address
-        //contractAddress: "0x0326f2995b5defb4c06cff408cad8328423c6947",
+        contractAddress: '0xd9d2f154c0793d6cfcba9bb0a7745455f08558c1',
         userAccount: '',
         nametag: '',
         status: '',
@@ -81,8 +95,9 @@ var app = new Vue({
         itemId: '',
         itemManufacturer: '000', // default
         itemIpfsHash: '',
-        itemDateCreated: '',
+        itemDateProduced: '',
         itemUrl: '',
+        itemVideoUrl: '',
         // miscellaneous
         newOwnerAddress: '',
         processingMessage: ''
@@ -211,11 +226,16 @@ var app = new Vue({
         const loadItem = async (deedId) => {
           let deed = await ItemDeed.at(this.contractAddress);
 
-          const FIELD_SERIAL_NUMBER = 0
-          const FIELD_MANUFACTURER = 1
-          const FIELD_IPFS_HASH = 2
-          const FIELD_DATE_CREATED = 3
-          const FIELD_DATE_DELETED = 4
+          const FIELD_IS_UNIQUE = 0;
+          const FIELD_SERIAL_NUMBER = 1
+          const FIELD_MANUFACTURER = 2
+          const FIELD_DESCRIPTION = 3
+          const FIELD_IPFS_IMAGE = 4
+          const FIELD_IPFS_VIDEO = 5
+          const FIELD_VALUE_MSRP = 6
+          const FIELD_VALUE_SOLD = 7
+          const FIELD_DATE_PRODUCED = 8
+          const FIELD_DATE_DELETED = 9
 
           var itemDeed = await deed.deeds(deedId);
           try {
@@ -228,16 +248,21 @@ var app = new Vue({
           var url = await deed.deedUri(deedId);
           const item = {
             id: deedId,
+            isUnique: itemDeed[FIELD_IS_UNIQUE],
             serialNumber: itemDeed[FIELD_SERIAL_NUMBER],
             manufacturer: itemDeed[FIELD_MANUFACTURER],
-            ipfsHash: itemDeed[FIELD_IPFS_HASH],
-            dateCreated: itemDeed[FIELD_DATE_CREATED],
+            description: itemDeed[FIELD_DESCRIPTION],
+            ipfsImage: itemDeed[FIELD_IPFS_IMAGE],
+            ipfsVideo: itemDeed[FIELD_IPFS_VIDEO],
+            valueMsrp: itemDeed[FIELD_VALUE_MSRP],
+            valueSold: itemDeed[FIELD_VALUE_SOLD],
+            dateProduced: itemDeed[FIELD_DATE_PRODUCED],
             dateDeleted: itemDeed[FIELD_DATE_DELETED],
             owner: itemOwner,
             itemUrl: url
           }
           // HACK ALERT
-          item.itemUrl = ITEMDEED_IPFS_URL + item.ipfsHash;
+          item.itemUrl = ITEMDEED_IPFS_URL + item.ipfsImage;
           this.singleItem = item;
         }
         await loadItem(deedId);
@@ -249,11 +274,16 @@ var app = new Vue({
           let deed = await ItemDeed.at(this.contractAddress);
           let deedIds = await deed.ids();
 
-          const FIELD_SERIAL_NUMBER = 0
-          const FIELD_MANUFACTURER = 1
-          const FIELD_IPFS_HASH = 2
-          const FIELD_DATE_CREATED = 3
-          const FIELD_DATE_DELETED = 4
+          const FIELD_IS_UNIQUE = 0;
+          const FIELD_SERIAL_NUMBER = 1
+          const FIELD_MANUFACTURER = 2
+          const FIELD_DESCRIPTION = 3
+          const FIELD_IPFS_IMAGE = 4
+          const FIELD_IPFS_VIDEO = 5
+          const FIELD_VALUE_MSRP = 6
+          const FIELD_VALUE_SOLD = 7
+          const FIELD_DATE_PRODUCED = 8
+          const FIELD_DATE_DELETED = 9
 
           for (let i = 0; i < deedIds.length; i++) {
             var deedId = deedIds[i];
@@ -267,16 +297,21 @@ var app = new Vue({
             var url = await deed.deedUri(deedId);
             const item = {
               id: deedId,
+              isUnique: itemDeed[FIELD_IS_UNIQUE],
               serialNumber: itemDeed[FIELD_SERIAL_NUMBER],
               manufacturer: itemDeed[FIELD_MANUFACTURER],
-              ipfsHash: itemDeed[FIELD_IPFS_HASH],
-              dateCreated: itemDeed[FIELD_DATE_CREATED],
+              description: itemDeed[FIELD_DESCRIPTION],
+              ipfsImage: itemDeed[FIELD_IPFS_IMAGE],
+              ipfsVideo: itemDeed[FIELD_IPFS_VIDEO],
+              valueMsrp: itemDeed[FIELD_VALUE_MSRP],
+              valueSold: itemDeed[FIELD_VALUE_SOLD],
+              dateProduced: itemDeed[FIELD_DATE_PRODUCED],
               dateDeleted: itemDeed[FIELD_DATE_DELETED],
               owner: itemOwner,
               itemUrl: url
             }
             // HACK ALERT
-            item.itemUrl = ITEMDEED_IPFS_URL + item.ipfsHash;
+            item.itemUrl = ITEMDEED_IPFS_URL + item.ipfsImage;
             if (web3.isAddress(itemOwner)) {
               this.allitems.push(item);
             }
@@ -331,8 +366,9 @@ var app = new Vue({
         this.itemOwner = item.owner;
         this.itemSerialNumber = item.serialNumber;
         this.itemManufacturer = item.manufacturer;
-        this.itemIpfsHash = item.ipfsHash;
-        this.itemDateCreated = new Date(item.dateCreated*1000);
+        this.itemIpfsImage = item.ipfsImage;
+        this.itemDateProduced = new Date(item.dateProduced*1000);
+        //this.itemDateCreated = new Date(item.dateCreated*1000);
         this.itemUrl = item.itemUrl;
         if (this.userAccount == item.owner) {
           this.showMyDetailsModal=true;
@@ -453,7 +489,7 @@ var app = new Vue({
         try {
           let item = await this.loadItemWithId(deedId);
           if (this.singleItem) {
-	    this.showItemDetails(this.singleItem);
+	          this.showItemDetails(this.singleItem);
           }
           else {
             alert("Item with deedid " + deedId + " not found");
@@ -472,7 +508,7 @@ var app = new Vue({
          this.processingMessage = "Transferring item deed to " + this.newOwnerAddress + ". This may take a while...";
          this.showSpinner = true;
          try {
-           //alert("creating Item deed with "  + this.itemSerialNumber + " " +  this.itemManufacturer + " " +  this.itemIpfsHash + " " +  this.userAccount);
+           //alert("creating Item deed with "  + this.itemSerialNumber + " " +  this.itemManufacturer + " " +  this.itemIpfsImage + " " +  this.userAccount);
            let result = await deed.transfer(this.newOwnerAddress, this.itemId);
          } catch (error) {
            console.log(error.message);
@@ -512,8 +548,8 @@ var app = new Vue({
          this.processingMessage = "Registering item deed on the blockchain. This may take a while...";
          this.showSpinner = true;
          try {
-           //alert("creating Item deed with "  + this.itemSerialNumber + " " +  this.itemManufacturer + " " +  this.itemIpfsHash + " " +  this.userAccount);
-           let result = await deed.create(this.itemSerialNumber, this.itemManufacturer, this.itemIpfsHash, this.userAccount);
+           //alert("creating Item deed with "  + this.itemSerialNumber + " " +  this.itemManufacturer + " " +  this.itemIpfsImage + " " +  this.userAccount);
+           let result = await deed.create(this.itemSerialNumber, this.itemManufacturer, this.itemIpfsImage, this.itemIpfsItemVideo, this.userAccount);
          } catch (error) {
            console.log(error.message);
            this.showSpinner = false;

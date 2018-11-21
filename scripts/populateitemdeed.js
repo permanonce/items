@@ -15,14 +15,23 @@ const _owner5 = web3.eth.accounts[5];
 const _owner6 = web3.eth.accounts[6];
 const _owner7 = web3.eth.accounts[7];
 
-const _ipfs1 = "QmapmkuG84mVjWbLgoPWfZpJvFR1d6tQ8B8u1NnNAnb9vz";
-const _ipfs2 = "QmTsx8byxDXaZV5pcNsaoctctibJqm5H3jmZ6XeSgH2RRD";
-const _ipfs3 = "QmPB7wCgU35yt2uJ1ynsEYM9jQxLnYDAPEjpZoVWCV7yqj";
-const _ipfs4 = "QmcY3N16r4GSNkgJPJiQjKxYVTrB27yzqPAgVonqVpMq5r";
-const _ipfs5 = "QmeJ7qTAuViHztHs1RqGHvAgRtnJwQfEu1Kjt5hWbPJVfj";
-const _ipfs6 = "QmT8CqNEbpv11hFQxjYzEzd4qRk5nCGhNTkoVeVSmz9UdW";
-const _ipfs7 = "QmaoRCweKNLfdnv8sQz9v9fyZ3AsPCT9m2PBdWSWtHkzhM";
-const _ipfs8 = "QmRgCm6EBtqSeCNKboZYH7NhncdpD7nKheYJR8NDX8rCqw";
+const _ipfsImage1 = "QmapmkuG84mVjWbLgoPWfZpJvFR1d6tQ8B8u1NnNAnb9vz";
+const _ipfsImage2 = "QmTsx8byxDXaZV5pcNsaoctctibJqm5H3jmZ6XeSgH2RRD";
+const _ipfsImage3 = "QmPB7wCgU35yt2uJ1ynsEYM9jQxLnYDAPEjpZoVWCV7yqj";
+const _ipfsImage4 = "QmcY3N16r4GSNkgJPJiQjKxYVTrB27yzqPAgVonqVpMq5r";
+const _ipfsImage5 = "QmeJ7qTAuViHztHs1RqGHvAgRtnJwQfEu1Kjt5hWbPJVfj";
+const _ipfsImage6 = "QmT8CqNEbpv11hFQxjYzEzd4qRk5nCGhNTkoVeVSmz9UdW";
+const _ipfsImage7 = "QmaoRCweKNLfdnv8sQz9v9fyZ3AsPCT9m2PBdWSWtHkzhM";
+const _ipfsImage8 = "QmRgCm6EBtqSeCNKboZYH7NhncdpD7nKheYJR8NDX8rCqw";
+
+const _ipfsVideo8 = "QmapmkuG84mVjWbLgoPWfZpJvFR1d6tQ8B8u1NnNAnb9vz";
+const _ipfsVideo7 = "QmTsx8byxDXaZV5pcNsaoctctibJqm5H3jmZ6XeSgH2RRD";
+const _ipfsVideo6 = "QmPB7wCgU35yt2uJ1ynsEYM9jQxLnYDAPEjpZoVWCV7yqj";
+const _ipfsVideo5 = "QmcY3N16r4GSNkgJPJiQjKxYVTrB27yzqPAgVonqVpMq5r";
+const _ipfsVideo4 = "QmeJ7qTAuViHztHs1RqGHvAgRtnJwQfEu1Kjt5hWbPJVfj";
+const _ipfsVideo3 = "QmT8CqNEbpv11hFQxjYzEzd4qRk5nCGhNTkoVeVSmz9UdW";
+const _ipfsVideo2 = "QmaoRCweKNLfdnv8sQz9v9fyZ3AsPCT9m2PBdWSWtHkzhM";
+const _ipfsVideo1 = "QmRgCm6EBtqSeCNKboZYH7NhncdpD7nKheYJR8NDX8rCqw";
 
 const _manufacturer1 = "S25"; //"Specialized";
 const _manufacturer2 = "M20"; //"Moots Cycles";
@@ -40,12 +49,29 @@ const _serialNumber5 = "VGHR8987IHKH";
 const _serialNumber6 = "98UYDGE";
 const _serialNumber7 = "63U00927";
 
-const _price1 = 1.0;
-const _price2 = .001;
-const _price3 = .02;
-const _price4 = 10.0;
-const _price5 = 1.01;
-const _price6 = 1.002;
+const _description1 = "this is a thingy";
+const _description2 = "this is a thingy too";
+const _description3 = "this is also a thingy";
+const _description4 = "this is also a thingy too";
+const _description5 = "this is also a thingy as well";
+const _description6 = "in addition, this is also a thingy";
+const _description7 = "as you should, this is also a thingy too";
+
+const _valueMsrp1 = 1000000;
+const _valueMsrp2 = 2332433434;
+const _valueMsrp3 = 20923840282;
+const _valueMsrp4 = 23943233;
+const _valueMsrp5 = 9820394234;
+const _valueMsrp6 = 1002;
+const _valueMsrp7 = 1002;
+
+const _valueSold1 = 1000001;
+const _valueSold2 = 2332433435;
+const _valueSold3 = 20923840283;
+const _valueSold4 = 23943234;
+const _valueSold5 = 9820394235;
+const _valueSold6 = 1003;
+const _valueSold7 = 1003;
 
 
 ItemDeed.setProvider(provider);
@@ -54,19 +80,22 @@ ItemDeed.defaults({from: _creator, gas: 900000 });
 const populateDeeds = async () => {
   let deed = await ItemDeed.deployed();
   let name = await deed.name();
-
+  //var date = Math.round((new Date()).getTime() / 1000);
+  var date = 483235200;
   try {
+    
     // These will appear when you click the "All Items" link or when the index.html first loads.
-    await deed.create(_serialNumber1, _manufacturer1, _ipfs1, _owner1);
-    await deed.create(_serialNumber2, _manufacturer2, _ipfs2, _owner2);
-    await deed.create(_serialNumber3, _manufacturer3, _ipfs3, _owner3);
-    await deed.create(_serialNumber4, _manufacturer4, _ipfs4, _owner4);
-    await deed.create(_serialNumber5, _manufacturer5, _ipfs5, _owner5);
-    await deed.create(_serialNumber6, _manufacturer6, _ipfs6, _owner6);
-    await deed.create(_serialNumber7, _manufacturer7, _ipfs7, _owner7);
+    await deed.create(_owner1, true, _serialNumber1, _manufacturer1, _description1, _ipfsImage1, _ipfsVideo1, _valueMsrp1, _valueSold1, date);
+    await deed.create(_owner2, false, _serialNumber2, _manufacturer2, _description2, _ipfsImage2, _ipfsVideo2, _valueMsrp2, _valueSold2, date);
+    await deed.create(_owner3, false, _serialNumber3, _manufacturer3, _description3, _ipfsImage3, _ipfsVideo3, _valueMsrp3, _valueSold3, date);
+    await deed.create(_owner4, true, _serialNumber4, _manufacturer4, _description4, _ipfsImage4, _ipfsVideo4, _valueMsrp4, _valueSold4, date);
+    await deed.create(_owner5, false, _serialNumber5, _manufacturer5, _description5, _ipfsImage5, _ipfsVideo5, _valueMsrp5, _valueSold5, date);
+    await deed.create(_owner6, false, _serialNumber6, _manufacturer6, _description6, _ipfsImage6, _ipfsVideo6, _valueMsrp6, _valueSold6, date);
+    await deed.create(_owner7, true, _serialNumber7, _manufacturer7, _description7, _ipfsImage7, _ipfsVideo7, _valueMsrp7, _valueSold7, date);
     // Optionally add your PERSONAL item(s) here, so the "My Items" link will work.
-    await deed.create("My$3r1AlnuM53R", "S25", _ipfs8, "0xbf00309c721accdf1f44f60c601b99bf2863b338");
-    await deed.create("My$3r1AlnuM53R", "F05", _ipfs8, "0xbf00309c721accdf1f44f60c601b99bf2863b338");
+    var someAddress = "0xbf00309c721accdf1f44f60c601b99bf2863b338";
+    await deed.create(someAddress, false, "My$3r1AlnuM53R", "S25", _description1, _ipfsImage8, _ipfsVideo8, _valueMsrp1, _valueSold1, date);
+    await deed.create(someAddress, false, "My$3r1AlnuM53R", "F05", _description2, _ipfsImage8, _ipfsVideo8, _valueMsrp2, _valueSold2, date);
 
 
   } catch (error) {

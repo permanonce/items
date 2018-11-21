@@ -12,17 +12,17 @@ Its inheriting contract `ERC721Deed.sol` is based on the `ERC721Token` from Open
 
 ItemDeed is a first attempt at building an Ethereum Dapp.  ItemDeed leans heavily on the incredible efforts of:
 1. https://github.com/nastassiasachs/ERC721ExampleDeed
-2. https://github.com/Michael-Free/itemchain-ethwaterloo.
-3. OpenZeppelin.  
+2. OpenZeppelin.  
 
 Thank you!  
 
 ## Prerequisites
 1. npm
-2. Truffle
-3. Git
-4. Ganache
-5. Chrome browser with Metamask plugin
+2. Truffle v4.1.3 (core: 4.1.3)
+3. Solidity v0.4.19 (solc-js)
+4. Git
+5. Ganache
+6. Chrome browser with Metamask plugin
 
 ## Dev Installation
 1. git clone https://github.com/permanonce/items.git

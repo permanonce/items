@@ -1,5 +1,6 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
     mode: 'development',
@@ -17,24 +18,31 @@ module.exports = {
   module: {
     rules: [
       {
+       test: /\.vue$/,
+       loader: 'vue-loader' 
+      },
+      {
        test: /\.css$/,
        loader: [ 'style-loader', 'css-loader' ]
-      }
-    ],
-    rules: [
+      },
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
+        use: [{
         loader: 'babel-loader',
         query: {
           presets: ['es2015'],
           plugins: ['transform-runtime']
         }
+      }]
       }
     ]
   },
   plugins: [
+    new VueLoaderPlugin(),
     new CopyWebpackPlugin([
+      { from: './app/Users.vue', to: "Users.vue" },
+      { from: './app/ItemDetails.vue', to: "ItemDetails.vue" },
       { from: './app/index.html', to: "index.html" },
       { from: './app/register.html', to: "register.html" },
       { from: './app/contact.html', to: "contact.html" },

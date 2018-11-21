@@ -19,25 +19,30 @@ contract ItemDeed is ERC721Deed, ERC721Metadata, Pausable {
   /* Events */
 
   // When a deed is created by the contract owner.
-  event Creation(uint256 indexed id, string serialNumber, string manufacturer, string ipfsHash, address owner);
+  event Creation(uint256 indexed deedId, address indexed owner, string serialNumber, string manufacturer, string ipfsImage, string ipfsVideo, uint256 valueMsrp, uint256 valueSold, uint256 dateProduced, uint256 dateCreated);
 
   // When a deed needs to be removed. The contract owner needs to own the deed in order to be able to destroy it.
-  event Destruction(uint256 indexed id);
+  event Destruction(uint256 indexed id, uint256 dateDeleted);
 
 
   /* The actual deeds */
 
   // The data structure of the Item deed
   struct Item {
+    bool isUnique;
     string serialNumber;
     string manufacturer;
-    string ipfsHash;
-    uint256 created;
-    uint256 deleted;
+    string description;
+    string ipfsImage;
+    string ipfsVideo;
+    uint256 valueMsrp;
+    uint256 valueSold;
+    uint256 dateProduced;
+    uint256 dateDeleted;
   }
 
-  // map a item name to an array of IPFS Hashses
-  mapping (uint256 => string[]) private ipfsImages;
+  // map a item name to an array of IPFS Document Hashes
+  mapping (uint256 => string[]) private ipfsDocuments;
 
   // Mapping from _deedId to Item 
   //mapping (uint256 => Item) private deeds;
@@ -88,19 +93,17 @@ contract ItemDeed is ERC721Deed, ERC721Metadata, Pausable {
   }
 
   modifier notDeleted(uint256 _deedId) {
-    require(deeds[_deedId].deleted == 0);
+    require(deeds[_deedId].dateDeleted == 0);
     _;
   }
 
    /* ERC721Metadata */
 
-  function name()
-  public pure returns (string) {
+  function name() public pure returns (string) {
     return "ItemDeed";
   }
 
-  function symbol()
-  public pure returns (string) {
+  function symbol() public pure returns (string) {
     return "ITEM";
   }
 
@@ -113,18 +116,18 @@ contract ItemDeed is ERC721Deed, ERC721Metadata, Pausable {
     );
   }
 
-  function addIpfsImage(uint256 _deedId, string _ipfsHash) {
-    ipfsImages[_deedId].push(_ipfsHash);
+  function addIpfsDocument(uint256 _deedId, string _ipfsDocument) {
+    ipfsDocuments[_deedId].push(_ipfsDocument);
   }
 
-  function getIpfsImageCount(uint256 _deedId)
+  function getIpfsDocumentCount(uint256 _deedId)
     external view returns (uint256 count) {
-    return ipfsImages[_deedId].length;
+    return ipfsDocuments[_deedId].length;
   }
 
   function deedUri(uint256 _deedId)
   external view onlyExistingNames(_deedId) returns (string _uri) {
-    return _strConcat(url, ipfsImages[_deedId][0]);
+    return _strConcat(url, ipfsDocuments[_deedId][0]);
   }
 
   function deedName(uint256 _deedId)
@@ -133,13 +136,11 @@ contract ItemDeed is ERC721Deed, ERC721Metadata, Pausable {
   }
 
   /* Enable listing of all deeds (alternative to ERC721Enumerable to avoid having to work with arrays). */
-  function ids()
-  external view returns (uint256[]) {
+  function ids() external view returns (uint256[]) {
     return deedIds;
   }
 
-  function deed(uint256 _deedId)
-  external view returns (Item) {
+  function deed(uint256 _deedId) external view returns (Item) {
     return deeds[_deedId];
   }
 
@@ -147,23 +148,29 @@ contract ItemDeed is ERC721Deed, ERC721Metadata, Pausable {
 
   // Anyone creates deeds. Newly created deeds are initialised with
   // a derived name, serialNumber, manufacturer, owner address.
-  function create(string _serialNumber, string _manufacturer, string _ipfsHash, address _owner)
+  function create(address _owner, bool _isUnique, string _serialNumber, string _manufacturer, string _description, string _ipfsImage, string _ipfsVideo, uint256 _valueMsrp, uint256 _valueSold, uint256 _dateProduced )
   public noExistingNames(_serialNumber, _manufacturer) {
     string memory _name = _strConcat(_serialNumber, _manufacturer);
     deedNameExists[_name] = true;
     uint256 deedId = deedIds.length;
     deedIds.push(deedId);
     super._mint(_owner, deedId);
-    ipfsImages[deedId].push(_ipfsHash);
+    ipfsDocuments[deedId].push(_ipfsImage);
+    ipfsDocuments[deedId].push(_ipfsVideo);
 
     deeds[deedId] = Item({
+      isUnique: _isUnique,
       serialNumber: _serialNumber,
       manufacturer: _manufacturer,
-      ipfsHash: _ipfsHash,
-      created: now,
-      deleted: 0
+      description: _description,
+      ipfsImage: _ipfsImage,
+      ipfsVideo: _ipfsVideo,
+      valueMsrp: _valueMsrp,
+      valueSold: _valueSold,
+      dateProduced: _dateProduced,
+      dateDeleted: 0
     });
-    Creation(deedId, _serialNumber, _manufacturer, _ipfsHash, _owner);
+    Creation(deedId, _owner, _serialNumber, _manufacturer, _ipfsImage, _ipfsVideo, _valueMsrp, _valueSold, _dateProduced, now);
   }
 
   // Deeds can only be burned if the contract owner is also the deed owner.
@@ -171,10 +178,10 @@ contract ItemDeed is ERC721Deed, ERC721Metadata, Pausable {
   public onlyOwnerOf(_deedId) notDeleted(_deedId) {
     // We deliberately let the name stay in use, so that each name remains a unique identifier forever.
     // Iterating over an array of IDs is too expensive, so we mark the deed as deleted instead.
-    deeds[_deedId].deleted = now;
+    deeds[_deedId].dateDeleted = now;
 
     super._burn(_deedId);
-    Destruction(_deedId);
+    Destruction(_deedId, now);
   }
 
   function setUrl(string _url)

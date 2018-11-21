@@ -103,6 +103,11 @@ img {
   <a href="proveit.html" class="w3-bar-item w3-button w3-padding-small w3-hover-black">
     AUTHENTICATE AN ITEM
   </a>
+  <!--
+  <router-link to="/users">Users</router-link>
+  <router-link to="/itemdetails">Item Details</router-link>
+  <router-view></router-view>
+  -->
 </nav>
 
 <!-- Page Content -->
@@ -116,6 +121,7 @@ img {
     <link rel="shortcut icon" href="favicon.png" >
   </header>
 
+  <!-- start template-->
   <div v-if="web3Enabled" class="w3-center w3-padding-small w3-black"><input type="text" v-model="search" placeholder="Search Items"></div>
 
   <!-- Item List Section -->
@@ -140,6 +146,7 @@ img {
       <div class="row">
         <div class="column">
           <img v-bind:src="itemUrl" v-on:click="displayMetaData()">
+          <img v-bind:src="itemVideoUrl" v-on:click="displayMetaData()">
         </div>
         <div class="column">
           <canvas id="canvas"></canvas>
@@ -147,7 +154,7 @@ img {
           Scan with Mobile dApp
         </div>
       </div>
-      <p>Date Created: {{ itemDateCreated }}</p>
+      <p>Date Produced: {{ itemDateProduced }}</p>
     </span>
   </modal>
 
@@ -160,6 +167,7 @@ img {
       <div class="row">
         <div class="column">
           <img v-bind:src="itemUrl" v-on:click="displayMetaData()">
+          <img v-bind:src="itemVideoUrl" v-on:click="displayMetaData()">
         </div>
         <div class="column">
           <canvas id="canvas"></canvas>
@@ -167,7 +175,7 @@ img {
           Scan with Mobile dApp
         </div>
       </div>
-      <p>Date Created: {{ itemDateCreated }}</p>
+      <p>Date Produced: {{ itemDateProduced }}</p>
       <p>{{ processingMessage }} <i v-show="showSpinner" class="fa fa-spinner fa-spin" style="font-size:24px;color:white"></i></p>
       <p><button v-show="displayRegistrationComponents" type="button" class="modal-button-default" v-on:click="transferOwnership()">Transfer to Address:</button></p>
       <p><input v-show="displayRegistrationComponents" type="text" id="newOwnerAddress" v-model="newOwnerAddress" :placeholder="itemOwner"></p>
